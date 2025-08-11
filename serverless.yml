@@ -1,0 +1,98 @@
+service: lms-howto-service
+frameworkVersion: '3.34.0'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    DB_HOST: ${env:DB_HOST}
+    DB_PORT: ${env:DB_PORT}
+    DB_USER: ${env:DB_USER}
+    DB_PASS: ${env:DB_PASS}
+    DB_NAME: ${env:DB_NAME}
+    COGNITO_USER_POOL_ID: ${env:COGNITO_USER_POOL_ID}
+    COGNITO_CLIENT_ID: ${env:COGNITO_CLIENT_ID}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - rds-db:connect
+          Resource: "*" # fine-tune with resource ARNs
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+          Resource: "arn:aws:s3:::your-bucket-name/*"
+
+functions:
+  createHowToVideos:
+    handler: src/handlers/createHowToVideo.handler
+    events:
+      - http:
+          path: lms/createHowToVideos
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: { "Ref": "ApiGatewayAuthorizer" } # alternative approach below
+
+  getHowToVideos:
+    handler: src/handlers/getHowToVideos.handler
+    events:
+      - http:
+          path: lms/getHowToVideos
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: { "Ref": "ApiGatewayAuthorizer" }
+
+  updateHowToVideo:
+    handler: src/handlers/updateHowToVideo.handler
+    events:
+      - http:
+          path: lms/updateHowToVideo/{id}
+          method: put
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: { "Ref": "ApiGatewayAuthorizer" }
+
+  analytics:
+    handler: src/handlers/analytics.handler
+    events:
+      - http:
+          path: lms/analytics
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: { "Ref": "ApiGatewayAuthorizer" }
+
+resources:
+  Resources:
+    ApiGatewayAuthorizer:
+      Type: "AWS::ApiGateway::Authorizer"
+      Properties:
+        Name: CognitoAuthorizer
+        Type: COGNITO_USER_POOLS
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        IdentitySource: "method.request.header.Authorization"
+        ProviderARNs:
+          - "arn:aws:cognito-idp:${self:provider.region}:${aws:accountId}:userpool/${ssm:/lms/${self:provider.stage}/cognito/userPoolId, 'local-pool'}"
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-plugin-typescript
+  - serverless-pseudo-parameters
+  - serverless-offline # for local dev
+
+package:
+  individually: true
+  exclude:
+    - node_modules/**
+    - src/**/*.spec.ts
