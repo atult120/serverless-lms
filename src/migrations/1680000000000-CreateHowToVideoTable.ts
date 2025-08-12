@@ -66,8 +66,8 @@ export class CreateHowToVideoTable1680000000000 implements MigrationInterface {
           {
             name: 'status',
             type: 'enum',
-            enum: ['draft', 'published', 'archived'],
-            default: `'draft'`,
+            enum: ['enabled', 'disabled', 'unpublished'],
+            default: `'unpublished'`,
           },
           {
             name: 'is_protected',

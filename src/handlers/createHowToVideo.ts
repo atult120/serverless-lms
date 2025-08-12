@@ -36,7 +36,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       updatedBy: user.id!,
       provider: dto.provider || 's3',
       videoUrl: dto.video_url,
-      status: (dto.status as 'draft' | 'published' | 'archived') || 'draft',
+      status: (dto.status as 'enabled' | 'disabled' | 'unpublished') || 'unpublished',
       isProtected: dto.is_protected || false,
     };
 

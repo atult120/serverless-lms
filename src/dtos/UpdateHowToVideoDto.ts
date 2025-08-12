@@ -11,7 +11,7 @@ export class UpdateHowToVideoDto {
   description?: string;
 
   @IsOptional()
-  @IsEnum(['draft', 'published', 'archived'], { message: 'Status must be draft, published, or archived' })
+  @IsEnum(['enabled', 'disabled', 'unpublished'], { message: 'Status must be enabled, disabled, or unpublished' })
   status?: string;
 
   @IsOptional()

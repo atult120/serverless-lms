@@ -42,7 +42,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     // Apply updates
     if (dto.title !== undefined) video.title = dto.title;
     if (dto.description !== undefined) video.description = dto.description;
-    if (dto.status !== undefined) video.status = dto.status as 'draft' | 'published' | 'archived';
+    if (dto.status !== undefined) video.status = dto.status as 'enabled' | 'disabled' | 'unpublished';
     if (dto.tags !== undefined) video.tags = dto.tags;
     if (dto.thumbnail_url !== undefined) video.thumbnailUrl = dto.thumbnail_url;
     

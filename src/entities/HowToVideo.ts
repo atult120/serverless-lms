@@ -33,8 +33,8 @@ export class HowToVideo {
   @Column({ name: 'duration_seconds', type: 'int', unsigned: true, nullable: true })
   durationSeconds?: number;
 
-  @Column({ type: 'enum', enum: ['draft', 'published', 'archived'], default: 'draft' })
-  status!: 'draft' | 'published' | 'archived';
+  @Column({ type: 'enum', enum: ['enabled', 'disabled', 'unpublished'], default: 'unpublished' })
+  status!: 'enabled' | 'disabled' | 'unpublished';
 
   @Column({ name: 'is_protected', type: 'tinyint', width: 1, default: 0 })
   isProtected!: boolean;

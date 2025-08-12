@@ -26,7 +26,7 @@ export class CreateHowToVideoDto {
   duration_seconds?: number;
 
   @IsOptional() 
-  @IsEnum(['draft','published','archived']) 
+  @IsEnum(['enabled','disabled','unpublished']) 
   status?: string;
 
   @IsOptional() 

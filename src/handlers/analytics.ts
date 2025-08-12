@@ -2,7 +2,6 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import { AppDataSource } from '../database/database';
 import { HowToVideo } from '../entities/HowToVideo';
-import { getManager } from 'typeorm';
 import { getUserFromEvent } from '../utils/auth';
 
 export const handler: APIGatewayProxyHandler = async (event) => {
