@@ -152,7 +152,7 @@ Authorization: Bearer <ID_TOKEN>
 ## 📮 Postman Collection
 You can import the Postman collection to test all API endpoints.
 
-**Download:** [LMS HowTo API Postman Collection](./postman/LMS-HowTo-API.postman_collection.json)
+**Download:** [LMS HowTo API Postman Collection](./docs/LMS-HowTo-API.postman_collection.json)
 
 **Steps to Import in Postman:**
 1. Open Postman
