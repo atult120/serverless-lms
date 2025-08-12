@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "1af9b3da-1fd7-474a-872a-dcae385cc7c6",
+		"name": "LMS HowTo API",
+		"description": "Postman collection for LMS HowTo API with Cognito Bearer Auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5780163"
+	},
+	"item": [
+		{
+			"name": "Create How-To Videos",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"hELLO\",\n    \"description\": \"Step by step ...\",\n    \"video_url\": \"https://s3.amazonaws.com/.../video.mp4\",\n    \"thumbnail_url\": \"https://s3.amazonaws.com/.../thumb.jpg\",\n    \"provider\": \"s3\",\n    \"duration_seconds\": 180,\n    \"status\": \"published\",\n    \"is_protected\": true,\n    \"tags\": [\n        \"setup\",\n        \"install\"\n    ],\n    \"metadata\": {\n        \"resolution\": \"1080p\"\n    },\n    \"password\": \"Admin123\"\n}"
+				},
+				"url": {
+					"raw": "{{localBaseUrl}}/lms/createHowToVideos",
+					"host": [
+						"{{localBaseUrl}}"
+					],
+					"path": [
+						"lms",
+						"createHowToVideos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateHow-To Videos",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Updated title\",\n  \"description\": \"...\",\n  \"status\": \"published\",\n  \"is_protected\": true,\n  \"password\": \"plain-text-if-protected\",\n  \"tags\": [\"updated\",\"tag\"]\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/lms/updateHowToVideo/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"lms",
+						"updateHowToVideo",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get How-To Videos",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/lms/getHowToVideos?page=1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"lms",
+						"getHowToVideos"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Analytics",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/lms/analytics",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"lms",
+						"analytics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Api For Coginto",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"ixltech\",\n    \"password\" : \"Admin234\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/lms/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"lms",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": " https://33f0djvg5a.execute-api.ap-south-1.amazonaws.com/dev"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"disabled": true
+		},
+		{
+			"key": "localBaseUrl",
+			"value": "http://localhost:3000/local",
+			"type": "string"
+		}
+	]
+}

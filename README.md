@@ -148,3 +148,16 @@ Authorization: Bearer <ID_TOKEN>
 
 [📄 View API Docs](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/tult120/serverless-lms/master/docs/swagger.yaml)
 
+
+## 📮 Postman Collection
+You can import the Postman collection to test all API endpoints.
+
+**Download:** [LMS HowTo API Postman Collection](./postman/LMS-HowTo-API.postman_collection.json)
+
+**Steps to Import in Postman:**
+1. Open Postman
+2. Click **Import**
+3. Select the file `LMS-HowTo-API.postman_collection.json`
+4. Set `baseUrl` to your API Gateway URL or `localBaseUrl` for local testing
+5. If using deployed AWS Lambda, first call the `Login API` to get an `accessToken` and set it in Postman variables.
+
