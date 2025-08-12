@@ -32,7 +32,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     // Create single video entity
     const videoData: Partial<HowToVideo> = {
       title: dto.title,
-      uploaderUserId: user.id!,
+      createdBy: user.id!,
+      updatedBy: user.id!,
       provider: dto.provider || 's3',
       videoUrl: dto.video_url,
       status: (dto.status as 'draft' | 'published' | 'archived') || 'draft',

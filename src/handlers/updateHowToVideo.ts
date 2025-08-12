@@ -24,6 +24,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     const dto = plainToInstance(UpdateHowToVideoDto, payload);
     
     await validateDto(dto);
+
     const repo = AppDataSource.getRepository(HowToVideo);
 
     const video = await repo.findOne({ 
@@ -55,6 +56,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         video.passwordHash = null;
       }
     }
+
+    video.updatedBy = user.id!
 
     const updatedVideo = await repo.save(video);
     await AppDataSource.destroy();

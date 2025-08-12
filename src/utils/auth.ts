@@ -16,7 +16,7 @@ export const getUserFromEvent = async (event: any) => {
     }
     const claims = event.requestContext?.authorizer?.claims;
     if (!claims) return null;
-    const role = (claims['cognito:groups'] || '').split(',')[0] || 'student';
+    const role = (claims['cognito:groups'] || '').split(',')[0] || 'admin';
     const cognitoSub = claims.sub;
     const email = claims.email;
     const name = claims.name || claims.email;

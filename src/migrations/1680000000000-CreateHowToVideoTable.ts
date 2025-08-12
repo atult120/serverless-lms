@@ -31,7 +31,12 @@ export class CreateHowToVideoTable1680000000000 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'uploader_user_id',
+            name: 'created_by',
+            type: 'bigint',
+            unsigned: true,
+          },
+          {
+            name: 'updated_by',
             type: 'bigint',
             unsigned: true,
           },

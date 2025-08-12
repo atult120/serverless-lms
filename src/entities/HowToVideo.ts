@@ -15,8 +15,11 @@ export class HowToVideo {
   @Column({ type: 'text', nullable: true })
   description?: string;
 
-  @Column({ name: 'uploader_user_id', type: 'bigint', unsigned: true })
-  uploaderUserId!: number;
+  @Column({ name: 'created_by', type: 'bigint', unsigned: true })
+  createdBy!: number;
+
+  @Column({ name: 'updated_by', type: 'bigint', unsigned: true })
+  updatedBy!: number;
 
   @Column({ name: 'provider', type: 'varchar', length: 50, default: 's3' })
   provider!: string;
