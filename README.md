@@ -146,3 +146,5 @@ Content-Type: application/json
 Authorization: Bearer <ID_TOKEN>
 ```
 
+[📄 View API Docs](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/tult120/serverless-lms/master/docs/swagger.yaml)
+
