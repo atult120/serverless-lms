@@ -25,12 +25,12 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\": \"hELLO\",\n    \"description\": \"Step by step ...\",\n    \"video_url\": \"https://s3.amazonaws.com/.../video.mp4\",\n    \"thumbnail_url\": \"https://s3.amazonaws.com/.../thumb.jpg\",\n    \"provider\": \"s3\",\n    \"duration_seconds\": 180,\n    \"status\": \"published\",\n    \"is_protected\": true,\n    \"tags\": [\n        \"setup\",\n        \"install\"\n    ],\n    \"metadata\": {\n        \"resolution\": \"1080p\"\n    },\n    \"password\": \"Admin123\"\n}"
+					"raw": "{\n    \"title\": \"hELLO\",\n    \"description\": \"Step by step ...\",\n    \"video_url\": \"https://s3.amazonaws.com/.../video.mp4\",\n    \"thumbnail_url\": \"https://s3.amazonaws.com/.../thumb.jpg\",\n    \"provider\": \"s3\",\n    \"duration_seconds\": 180,\n    \"status\": \"enabled\",\n    \"is_protected\": true,\n    \"tags\": [\n        \"setup\",\n        \"install\"\n    ],\n    \"metadata\": {\n        \"resolution\": \"1080p\"\n    },\n    \"password\": \"Admin123\"\n}"
 				},
 				"url": {
-					"raw": "{{localBaseUrl}}/lms/createHowToVideos",
+					"raw": "{{baseUrl}}/lms/createHowToVideos",
 					"host": [
-						"{{localBaseUrl}}"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"lms",
@@ -58,7 +58,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"title\": \"Updated title\",\n  \"description\": \"...\",\n  \"status\": \"published\",\n  \"is_protected\": true,\n  \"password\": \"plain-text-if-protected\",\n  \"tags\": [\"updated\",\"tag\"]\n}"
+					"raw": "{\n  \"title\": \"Updated 2\",\n  \"description\": \"Test\",\n  \"status\": \"disabled\",\n  \"is_protected\": true,\n  \"password\": \"plain-text-if-protected\",\n  \"tags\": [\"updated\",\"tag\"]\n}"
 				},
 				"url": {
 					"raw": "{{baseUrl}}/lms/updateHowToVideo/1",
