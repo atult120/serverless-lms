@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  BeforeInsert,
 } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 @Entity({ name: 'users' })
 export class User {
@@ -14,19 +16,19 @@ export class User {
   @Column({ type: 'char', length: 36, unique: true })
   uuid!: string;
 
-  @Column({ length: 100 })
-  firstName!: string;
+  @Column({ type: 'varchar', length: 255 })
+  name!: string;
 
-  @Column({ length: 100 })
-  lastName!: string;
-
-  @Column({ length: 255, unique: true })
+  @Column({ type: 'varchar', length: 255, unique: true })
   email!: string;
 
-  @Column({ name: 'password_hash', length: 255 })
-  passwordHash!: string;
+  @Column({ name: 'cognito_sub', type: 'varchar', length: 255, unique: true })
+  cognitoSub!: string;
 
-  @Column({ type: 'tinyint', width: 1, default: 1 })
+  @Column({ type: 'enum', enum: ['admin', 'instructor', 'student'], default: 'student' })
+  role!: 'admin' | 'instructor' | 'student';
+
+  @Column({ name: 'is_active', type: 'tinyint', width: 1, default: 1 })
   isActive!: boolean;
 
   @CreateDateColumn({ name: 'created_at' })
@@ -37,4 +39,11 @@ export class User {
 
   @Column({ name: 'deleted_at', type: 'timestamp', nullable: true })
   deletedAt?: Date | null;
+
+  @BeforeInsert()
+  generateUUID() {
+    if (!this.uuid) {
+      this.uuid = uuidv4();
+    }
+  }
 }

@@ -1,63 +1,83 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import { plainToInstance } from 'class-transformer';
-import { validateOrReject } from 'class-validator';
-import { v4 as uuidv4 } from 'uuid';
 import { AppDataSource } from '../database/database';
 import { HowToVideo } from '../entities/HowToVideo';
 import { CreateHowToVideoDto } from '../dtos/CreateHowToVideoDto';
 import { getUserFromEvent } from '../utils/auth';
-import { DeepPartial } from 'typeorm';
+import { validateDto } from '../utils/validation';
+import { hashPassword } from '../utils/password';
 
 export const handler: APIGatewayProxyHandler = async (event) => {
-  try {
+  try {    
     const user = await getUserFromEvent(event);
-    if (!user || !['admin', 'instructor'].includes(user.role)) {
+    if (!user) {
       return { statusCode: 403, body: JSON.stringify({ message: 'Forbidden' }) };
     }
 
-    // 2. Parse + validate payload
+    // Parse + validate payload
     const payload = JSON.parse(event.body || '{}');
-    console.log('Payload:', payload);
     const dto = plainToInstance(CreateHowToVideoDto, payload);
-    console.log('DTO instance:', dto);
-    const validationErrors = await validateOrReject(dto, { whitelist: true });
-    console.log('Validation errors:', validationErrors);
-    
 
-    // 3. DB connection
-    await AppDataSource.initialize();
+    await validateDto(dto);
 
+    // Initialize database connection
     const repo = AppDataSource.getRepository(HowToVideo);
 
-    // 4. Prepare array of entities
-    const videosToSave = dto.videos.map(v =>
-      repo.create({
-        title: v.title,
-        description: v.description,
-        uploaderUserId: user.id!,
-        provider: v.provider || 's3',
-        videoUrl: v.video_url,
-        thumbnailUrl: v.thumbnail_url,
-        durationSeconds: v.duration_seconds,
-        status: v.status || 'draft',
-        isProtected: v.is_protected || false,
-        tags: v.tags || null,
-        metadata: v.metadata || null,
-      }) as DeepPartial<HowToVideo>
-    );
+    // Handle password hashing if video is protected
+    let hashedPassword = null;
+    if (dto.is_protected && dto.password) {
+      hashedPassword = await hashPassword(dto.password);
+    }
 
-    // 6. Bulk save
-    const created = await repo.save(videosToSave);
+    // Create single video entity
+    const videoData: Partial<HowToVideo> = {
+      title: dto.title,
+      uploaderUserId: user.id!,
+      provider: dto.provider || 's3',
+      videoUrl: dto.video_url,
+      status: (dto.status as 'draft' | 'published' | 'archived') || 'draft',
+      isProtected: dto.is_protected || false,
+    };
 
-    // 7. Close DB connection
+    if (dto.description) videoData.description = dto.description;
+    if (dto.thumbnail_url) videoData.thumbnailUrl = dto.thumbnail_url;
+    if (dto.duration_seconds) videoData.durationSeconds = dto.duration_seconds;
+    if (hashedPassword) videoData.passwordHash = hashedPassword;
+    if (dto.tags && dto.tags.length > 0) videoData.tags = dto.tags;
+    if (dto.metadata) videoData.metadata = dto.metadata;
+
+    const videoToSave = repo.create(videoData);
+
+    // Save the video
+    const created = await repo.save(videoToSave);
+
+    // Close DB connection
     await AppDataSource.destroy();
 
     return {
       statusCode: 201,
-      body: JSON.stringify({ data: created })
+      body: JSON.stringify({ 
+        message: 'Video created successfully',
+        data: created 
+      })
     };
   } catch (err: any) {
-    console.error('Error creating videos:', err);
+    // Ensure connection is closed on error
+    if (AppDataSource.isInitialized) {
+      await AppDataSource.destroy();
+    }
+
+    if (err.validationErrors) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          message: err.message,
+          errors: err.validationErrors
+        }),
+      };
+    }
+    
+    console.error('Error creating video:', err);
     return {
       statusCode: 500,
       body: JSON.stringify({

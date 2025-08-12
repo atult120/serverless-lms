@@ -9,7 +9,7 @@ export class HowToVideo {
   @Column({ type: 'char', length: 36, unique: true })
   uuid!: string;
 
-  @Column({ length: 255 })
+  @Column({ type: 'varchar', length: 255 })
   title!: string;
 
   @Column({ type: 'text', nullable: true })
@@ -18,13 +18,13 @@ export class HowToVideo {
   @Column({ name: 'uploader_user_id', type: 'bigint', unsigned: true })
   uploaderUserId!: number;
 
-  @Column({ name: 'provider', length: 50, default: 's3' })
+  @Column({ name: 'provider', type: 'varchar', length: 50, default: 's3' })
   provider!: string;
 
-  @Column({ name: 'video_url', length: 1024 })
+  @Column({ name: 'video_url', type: 'varchar', length: 1024 })
   videoUrl!: string;
 
-  @Column({ name: 'thumbnail_url', length: 1024, nullable: true })
+  @Column({ name: 'thumbnail_url', type: 'varchar', length: 1024, nullable: true })
   thumbnailUrl?: string;
 
   @Column({ name: 'duration_seconds', type: 'int', unsigned: true, nullable: true })

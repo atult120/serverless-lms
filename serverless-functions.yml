@@ -1,0 +1,95 @@
+local:
+  createHowToVideos:
+    handler: src/handlers/createHowToVideo.handler
+    events:
+      - http:
+          path: lms/createHowToVideos
+          method: post
+          cors: true
+
+  getHowToVideos:
+    handler: src/handlers/getHowToVideos.handler
+    events:
+      - http:
+          path: lms/getHowToVideos
+          method: get
+          cors: true
+
+  updateHowToVideo:
+    handler: src/handlers/updateHowToVideo.handler
+    events:
+      - http:
+          path: lms/updateHowToVideo/{id}
+          method: put
+          cors: true
+
+  analytics:
+    handler: src/handlers/analytics.handler
+    events:
+      - http:
+          path: lms/analytics
+          method: get
+          cors: true
+  login:
+    handler: src/handlers/login.handler
+    events:
+      - http:
+          path: lms/login
+          method: post
+          cors: true
+
+dev:
+  createHowToVideos:
+    handler: dist/handlers/createHowToVideo.handler
+    events:
+      - http:
+          path: lms/createHowToVideos
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+
+  getHowToVideos:
+    handler: dist/handlers/getHowToVideos.handler
+    events:
+      - http:
+          path: lms/getHowToVideos
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+
+  updateHowToVideo:
+    handler: dist/handlers/updateHowToVideo.handler
+    events:
+      - http:
+          path: lms/updateHowToVideo/{id}
+          method: put
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+
+  analytics:
+    handler: dist/handlers/analytics.handler
+    events:
+      - http:
+          path: lms/analytics
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+  login:
+    handler: dist/handlers/login.handler
+    events:
+      - http:
+          path: lms/login
+          method: post
+          cors: true

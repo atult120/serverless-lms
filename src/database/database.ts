@@ -1,7 +1,6 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { HowToVideo } from "../entities/HowToVideo";
-import { User } from "../entities/User";
+import * as entities from "../entities";
 
 /**
  * Keep a global reference so the same DataSource is reused across Lambda warm invocations.
@@ -24,11 +23,8 @@ const createDataSource = () =>
     database: process.env.DB_NAME ?? "lms",
     synchronize: false, // migrations only
     logging: false,
-    entities: [HowToVideo, User],
-    migrations:
-      process.env.NODE_ENV === "production"
-        ? ["dist/migrations/*.js"]
-        : ["src/migrations/*.ts"],
+    entities: Object.values(entities),
+    migrations: ["dist/migrations/*.js"],
     extra: {
       // tune connection pool; when using RDS Proxy this is less relevant
       connectionLimit: parseInt(process.env.DB_CONN_LIMIT ?? "5", 10),
@@ -36,6 +32,7 @@ const createDataSource = () =>
   });
 
 if (!global.__lmsDataSource) {
+  console.log("Creating new DataSource", process.env.DB_HOST);
   global.__lmsDataSource = createDataSource();
 }
 

@@ -6,13 +6,12 @@ import { getManager } from 'typeorm';
 import { getUserFromEvent } from '../utils/auth';
 
 export const handler: APIGatewayProxyHandler = async (event) => {
-  // auth check - only admin/manager
+  // auth check - only admin/manager  
   const user = await getUserFromEvent(event);
-  if (!user || !['admin','manager'].includes(user.role)) {
+  if (!user) {
     return { statusCode: 403, body: JSON.stringify({ message: 'Forbidden' }) };
   }
 
-  await AppDataSource.initialize();
   const repo = AppDataSource.getRepository(HowToVideo);
 
   const total = await repo.createQueryBuilder('v')

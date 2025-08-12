@@ -1,8 +1,10 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { config } from "dotenv";
+import { User } from "./entities/User";
+import { HowToVideo } from "./entities/HowToVideo";
 
-config(); // Load .env for DB credentials
+config();
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -10,9 +12,9 @@ export const AppDataSource = new DataSource({
   port: parseInt(process.env.DB_PORT ?? "3306", 10),
   username: process.env.DB_USER ?? "root",
   password: process.env.DB_PASS ?? "",
-  database: process.env.DB_NAME ?? "lms",
+  database: process.env.DB_NAME ?? "lmss",
   synchronize: false,
   logging: true,
-  entities: ["src/entities/*.ts"],
+  entities: [User, HowToVideo], 
   migrations: ["src/migrations/*.ts"],
 });
