@@ -146,9 +146,6 @@ Content-Type: application/json
 Authorization: Bearer <ID_TOKEN>
 ```
 
-[📄 View API Docs](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/atult120/serverless-lms/master/docs/swagger.yaml)
-
-
 ## 📮 Postman Collection
 You can import the Postman collection to test all API endpoints.
 
